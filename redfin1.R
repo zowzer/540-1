@@ -1,11 +1,16 @@
+install.packages("XLConnect") #installs package to read Excel spreadsheets
+install.packages("tidyverse")
+
+
+getwd()
+
 library(rJava)
 library(xlsx)
 library(readxl) 
 library(tidyverse)
 
-getwd()
-redfin1 <- read_excel("~/R/redfin_2019-09-24-18-15-38.xlsm",
-                       sheet = "redfin_2019-09-24-18-15-38") #puts data in Global Environment#
+#Update file path before /redfin_2019... to reflect your own if getwd() doesn't work for you.
+redfin1 <- read_excel("~/MSBA/MSBA Git/540-1/redfin_2019-09-24-18-15-38.xlsm", sheet = "redfin_2019-09-24-18-15-38") #puts data in Global Environment#
 
 view(redfin1)
 
