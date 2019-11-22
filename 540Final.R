@@ -42,6 +42,14 @@ View(UserTypeCount)
 #create factor variable for user types#
 CityBikeData2$usertypefactor<-factor(CityBikeData2$usertype, levels=c("Subscriber", "Customer"))
 
+#count the values in bike id to get total bikes#
+BikeCount <- as.data.frame(table(CityBikeData2$bikeid))
+View(BikeCount)
+
+#Get the Min, Median, Mean, Max for all the variables#
+summary(CityBikeData2) 
+
+
 
 
 
