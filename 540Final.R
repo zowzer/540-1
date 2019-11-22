@@ -1,0 +1,45 @@
+library(readxl)
+library(plyr)
+library(tidyverse)
+library(car)
+
+# calls to see your current directory#
+getwd()
+
+setwd("~/Documents/TBANLT540")
+
+CityBikeData <- read_excel("~/Documents/TBANLT540/citibike-tripdata.xlsx")
+View(CityBikeData)
+
+#Removes empty cases, if any#
+CityBikeData1<-  CityBikeData[complete.cases(CityBikeData), ]
+
+#Returns how many observations have "NA" , if any #
+sum(is.na(CityBikeData1))
+
+CityBikeData2 <- CityBikeData %>% select(`start station name`,`end station name`,bikeid,usertype)
+
+#count the values in start station#
+StartStationCount <- as.data.frame(table(CityBikeData2$`start station name`))
+View(StartStationCount)
+
+
+#count the values in end station#
+EndStationCount <- as.data.frame(table(CityBikeData2$`end station name`))
+View(EndStationCount)
+
+
+
+#count the values in user type#
+UserTypeCount <- as.data.frame(table(CityBikeData2$usertype))
+View(UserTypeCount)
+
+#create factor variable for user types#
+CityBikeData2$usertypefactor<-factor(CityBikeData2$usertype, levels=c("Subscriber", "Customer"))
+
+
+
+
+
+
+
