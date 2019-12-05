@@ -94,12 +94,6 @@ summary(CityBikeData2)
 View(CityBikeData2)
 
 
-#plots#
-
-
-
-StationData1<-lm(tripduration~bikeid+usertypefactor, data=CityBikeData2)
-summary(StationData1)
 
 
 
