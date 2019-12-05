@@ -19,7 +19,7 @@ getwd()
 
 setwd("~/Documents/TBANLT540")
 
-CityBikeData <- read_excel("~/Documents/TBANLT540/citibike-tripdata.xlsx")
+CityBikeData <- read_excel("~/Documents/TBANLT540/citibike-tripdata_Complete2018.xlsx")
 View(CityBikeData)
 
 
@@ -35,8 +35,7 @@ sum(is.na(CityBikeData1))
 StartStationCount <- as.data.frame(table(CityBikeData2$`start station name`))
 View(StartStationCount)
 
-#create factor variable for start station#
-CityBikeData2$StartStationFactor<-factor(CityBikeData2$`start station name`)
+
 
 #SSLoc is Start Station Location
 CityBikeData2$SSLoc<-factor(CityBikeData2$`start station name`,levels=c('Bayside Park','Columbia Park','Bethune Center','JCBS Depot','Danforth Light Rail','Exchange Place','Paulus Hook','City Hall',
@@ -51,6 +50,12 @@ CityBikeData2$SSLoc<-factor(CityBikeData2$`start station name`,levels=c('Bayside
 #recode the factor to collapse the categories#
 CityBikeData2$SSLoc <- recode(CityBikeData2$`start station name`, 'c("Bayside Park","Columbia Park","Bethune Center","JCBS Depot","Danforth Light Rail") = "Other"')
 
+#create factor variable for start station#
+CityBikeData2$StartStationFactor<-factor(CityBikeData2$SSLoc)
+
+#count the values in start station#
+StartStationCount2 <- as.data.frame(table(CityBikeData2$StartStationFactor))
+View(StartStationCount2)
 
 #count the values in end station#
 EndStationCount <- as.data.frame(table(CityBikeData2$`end station name`))
@@ -65,7 +70,11 @@ CityBikeData2$ESLoc<-factor(CityBikeData2$`end station name`,levels=c('12 Ave & 
                                                                       'Newport PATH','Sip Ave','Hamilton Park','Exchange Place','Grove St PATH'))
 
 #recode the factor to collapse the categories#
-CityBikeData2$ESLoc <- recode(CityBikeData2$`end station name`, 'c("12 Ave & W 40 St","Vesey Pl & River Terrace","W 52 St & 5 Ave") = "New York"; c("Danforth Light Rail","Bayside Park","JCBS Depot","MLK Light Rail","Bethune Center") = "Other"')
+CityBikeData2$ESLoc <- recode(CityBikeData2$`end station name`, 'c("12 Ave & W 40 St","Vesey Pl & River Terrace","W 52 St & 5 Ave", "Danforth Light Rail","Bayside Park","JCBS Depot","MLK Light Rail","Bethune Center") = "Other"')
+
+#count the values in start station#
+EndStationCount2 <- as.data.frame(table(CityBikeData2$ESLoc))
+View(EndStationCount2)
 
 
 #count the values in user type#
@@ -85,10 +94,19 @@ summary(CityBikeData2)
 View(CityBikeData2)
 
 
+#plots#
 
-#linear regression 
+
+
 StationData1<-lm(tripduration~bikeid+usertypefactor, data=CityBikeData2)
 summary(StationData1)
+
+
+
+
+
+
+
 
 
 
