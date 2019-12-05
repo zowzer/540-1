@@ -23,13 +23,13 @@ CityBikeData <- read_excel("~/Documents/TBANLT540/citibike-tripdata_Complete2018
 View(CityBikeData)
 
 
-CityBikeData2 <- CityBikeData %>% select(`start station name`,`end station name`,bikeid, usertype,tripduration,starttime,stoptime,month)
+CityBikeData2 <- CityBikeData %>% select(`start station name`,`end station name`,bikeid, usertype,tripduration,starttime,stoptime,month,`start station id`)
 
 #Removes empty cases, if any#
 CityBikeData<-  CityBikeData[complete.cases(CityBikeData), ]
 
 #Returns how many observations have "NA" , if any #
-sum(is.na(CityBikeData1))
+sum(is.na(CityBikeData))
 
 #count the values in start station#
 StartStationCount <- as.data.frame(table(CityBikeData2$`start station name`))
@@ -60,8 +60,8 @@ CityBikeData2$ESLoc<-factor(CityBikeData2$`end station name`,levels=c('12 Ave & 
 CityBikeData2$ESLoc <- recode(CityBikeData2$`end station name`, 'c("11 Ave & W 41 St","Broadway & W 32 St","E 32 St & Park Ave","E 33 St & 5 Ave","E 39 St & 3 Ave","E 47 St & Park Ave","E 55 St & Lexington Ave","FDR Drive & E 35 St","Lexington Ave & E 24 St","W 16 St & The High Line","W 20 St & 11 Ave","W 22 St & 10 Ave","W 22 St & 8 Ave","W 37 St & 10 Ave","6 Ave & W 33 St","W 34 St & 11 Ave","Broadway & W 29 St","W 46 St & 11 Ave") = "Midtown"; c("6 Ave & Canal St","Barclay St & Church St","Pike St & Monroe St","Cliff St & Fulton St_1","Fulton St & Broadway","John St & William St","South St & Whitehall St","Bus Slip & State St","Maiden Ln & Pearl St","Mercer St & Spring St","W Broadway & Spring Street","West St & Chambers St","Hudson St & Reade St","Murray St & West St","Water - Whitehall Plaza","South End Ave & Liberty St") = "Lower Manhattan"; c("Amsterdam Ave & W 66 St","Central Park S & 6 Ave","E 110 St & Madison Ave","W 113 St & Broadway","W 116 St & Amsterdam Ave","W 52 St & 5 Ave","W 56 St & 10 Ave","W 59 St & 10 Ave","Amsterdam Ave & W 125 St","Central Park West & W 68 St","Central Park West & W 72 St","Broadway & Moylan Pl","Broadway & W 58 St","8 Ave & W 52 St") = "Manhattan"; c("Columbia St & Kane St","Prospect Pl & 6 Ave","S Portland Ave & Hanson Pl","Atlantic Ave & Furman St","Henry St & Atlantic Ave") = "Brooklyn"; c("Barrow St & Hudson St","Duane St & Greenwich St","Sullivan St & Washington Sq","W 11 St & 6 Ave","W 13 St & 6 Ave","W 4 St & 7 Ave S","Murray St & Greenwich St","Pier 40 - Hudson River Park","W 15 St & 7 Ave") = "Greenwich Village"')
 
 #count the values in start station#
-EndStationCount2 <- as.data.frame(table(CityBikeData2$ESLoc))
-View(EndStationCount2)
+EndStationFactor <- as.data.frame(table(CityBikeData2$ESLoc))
+View(EndStationFactor)
 
 #NEED CODE HERE TO DROP end station name#
 
@@ -85,18 +85,29 @@ summary(CityBikeData2)
 View(CityBikeData2)
 
 
+#linear regression for correlation#
+#BikeFit<-lm(`start station id`~StartStationFactor+EndStationFactor+usertypefactor+bikeid+month, data=CityBikeData2)
+#summary(BikeFit)
+
+
+
+
+
 #tell R this is time series data#
 #tsDuration<-zoo(CityBikeData2$tripduration)
+#tsSS<-zoo(CityBikeData2$StartStationFactor)
 
 #create plots of the timeseries #
 #ggplot(data = CityBikeData2, aes(x = CityBikeData2$month, y = CityBikeData2$tripduration))+ geom_line()
+#ggplot(data =CityBikeData2, aes(x = CityBikeData2$month, y = CityBikeData2$StartStationFactor))+ geom_line()
+
 
 #test for stationarity For the adf.test, if p-value < 0.05 => stationary#
 #adf.test(tsDuration)
+#adf.test(tsSS) this probably won't work because we need an integer ?? 
 
 #check the correlogram# 
 #acf(tsDuration)
-
 
 
 
