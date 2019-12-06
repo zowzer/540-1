@@ -5,6 +5,8 @@ install.packages("readxl")
 install.packages("plyr")
 install.packages("car")
 install.packages("zoo")
+install.packages("forecast")
+
 
 library(tidyverse)
 library(corrgram)
@@ -13,6 +15,7 @@ library(readxl)
 library(plyr)
 library(car)
 library(zoo)
+library(forecast)
 
 # calls to see your current directory#
 getwd()
@@ -20,6 +23,7 @@ getwd()
 setwd("~/Documents/TBANLT540")
 
 CityBikeData <- read_excel("~/Documents/TBANLT540/citibike-tripdata_Complete2018_2.xlsx")
+TimeSeries <- read_excel("~/Documents/TBANLT540/citibike_1718.xlsx")
 View(CityBikeData)
 
 
@@ -91,23 +95,32 @@ View(CityBikeData2)
 
 
 
-
-
 #tell R this is time series data#
-#tsDuration<-zoo(CityBikeData2$tripduration)
-#tsSS<-zoo(CityBikeData2$StartStationFactor)
+tsDuration<-zoo(CityBikeData2$tripduration)
+tsID<-zoo(CityBikeData2$bikeid)
 
 #create plots of the timeseries #
-#ggplot(data = CityBikeData2, aes(x = CityBikeData2$month, y = CityBikeData2$tripduration))+ geom_line()
-#ggplot(data =CityBikeData2, aes(x = CityBikeData2$month, y = CityBikeData2$StartStationFactor))+ geom_line()
+#ggplot(data = CityBikeData2, aes(x = CityBikeData2$tripduration, y = CityBikeData2$month))+ geom_line()
+ggplot(data = CityBikeData2, aes(x = CityBikeData2$month, y = CityBikeData2$tripduration))+ geom_line()
+#ggplot(data =CityBikeData2, aes(x = CityBikeData2$bikeid, y = CityBikeData2$month))+ geom_line()
 
 
 #test for stationarity For the adf.test, if p-value < 0.05 => stationary#
-#adf.test(tsDuration)
-#adf.test(tsSS) this probably won't work because we need an integer ?? 
+adf.test(tsDuration)
+
 
 #check the correlogram# 
-#acf(tsDuration)
+acf(tsDuration)
+
+pacf(tsDuration)
+
+#find the difference#
+ndiffs(x=CityBikeData2$tripduration)
+
+DurationBest <- auto.arima(x=CityBikeData2$tripduration)
+DurationBest
+
+predict(DurationBest,n.ahead=12,se.fit = TRUE)
 
 
 
